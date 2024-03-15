@@ -20,54 +20,44 @@ def source(name):
     src_dir = os.path.join(dir, ".")
     return os.path.join(src_dir, name)
 
-@pytest.mark.telemetry_files(source("max.nasm"))
-def test_max():
-    ram = {0: 35, 1: 7}
-    tst = {2: 35}
-    assert nasm_test("max.nasm", ram, tst)
-
-    ram = {0: 7, 1: 63}
-    tst = {2: 63}
-    assert nasm_test("max.nasm", ram, tst)
-
-@pytest.mark.telemetry_files(source("abs.nasm"))
-def test_abs():
-    ram = {1: -1}
+@pytest.mark.telemetry_files(source('jmp1.nasm'))
+def test_jmp1_if():
+    ram = {0: 0, 1: 0}
     tst = {0: 1}
-    assert nasm_test("abs.nasm", ram, tst)
+    assert nasm_test("jmp1.nasm", ram, tst)
 
-    ram = {1: 35}
-    tst = {0: 35}
-    assert nasm_test("abs.nasm", ram, tst)
+@pytest.mark.telemetry_files(source('jmp1.nasm'))
+def test_jmp1_else():
+    ram = {0: 0, 1: 3}
+    tst = {0: 2}
+    assert nasm_test("jmp1.nasm", ram, tst)
 
-@pytest.mark.telemetry_files(source("mult.nasm"))
-def test_mult():
-    ram = {0: 2, 1: 2}
-    tst = {3: 4}
-    assert nasm_test("mult.nasm", ram, tst)
+@pytest.mark.telemetry_files(source('jmp2.nasm'))
+def test_jmp2_if():
+    ram = {0: 0, 1: 3}
+    tst = {0: 1}
+    assert nasm_test("jmp2.nasm", ram, tst)
 
-    ram = {0: 32, 1: 16}
-    tst = {3: 512}
-    assert nasm_test("mult.nasm", ram, tst, 10000)
-
-@pytest.mark.telemetry_files(source("div.nasm"))
-def test_div():
+@pytest.mark.telemetry_files(source('jmp2.nasm'))
+def test_jmp2_else():
     ram = {0: 0, 1: 5}
-    tst = {2: 0}
-    assert nasm_test("div.nasm", ram, tst)
+    tst = {0: 2}
+    assert nasm_test("jmp2.nasm", ram, tst)
 
-    ram = {0: 4, 1: 2}
-    tst = {2: 2}
-    assert nasm_test("div.nasm", ram, tst)
+@pytest.mark.telemetry_files(source('jmp3.nasm'))
+def test_jmp3_if_equal():
+    ram = {0: 0, 1: 1, 2: 2}
+    tst = {0: 1}
+    assert nasm_test("jmp3.nasm", ram, tst)
 
-    ram = {0: 30, 1: 5}
-    tst = {2: 6}
-    assert nasm_test("div.nasm", ram, tst, 10000)
+@pytest.mark.telemetry_files(source('jmp3.nasm'))
+def test_jmp3_if_gt():
+    ram = {0: 0, 1: 2, 2: 2}
+    tst = {0: 1}
+    assert nasm_test("jmp3.nasm", ram, tst)
 
-    ram = {0: 46, 1: 5}
-    tst = {2: 9}
-    assert nasm_test("div.nasm", ram, tst, 10000)
-
-    ram = {0: 1023, 1: 7}
-    tst = {2: 146}
-    assert nasm_test("div.nasm", ram, tst, 10000)
+@pytest.mark.telemetry_files(source('jmp3.nasm'))
+def test_jmp3_else():
+    ram = {0: 0, 1: 2, 2: 0}
+    tst = {0: 2}
+    assert nasm_test("jmp3.nasm", ram, tst)
